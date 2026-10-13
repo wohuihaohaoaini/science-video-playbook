@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+build/
+out/
+audio/vo/
+audio/vo_v1/
+assets/fonts/
+assets/photos/*.jpg
+.DS_Store
+.claude/

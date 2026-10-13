@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>抗氰呼吸 · Film</title>
+<style>
+  @font-face { font-family: "Inter"; font-weight: 400; src: url("../assets/fonts/Inter-Regular.ttf"); }
+  @font-face { font-family: "Inter"; font-weight: 500; src: url("../assets/fonts/Inter-Medium.ttf"); }
+  @font-face { font-family: "Inter"; font-weight: 700; src: url("../assets/fonts/Inter-Bold.ttf"); }
+  @font-face { font-family: "Inter"; font-weight: 900; src: url("../assets/fonts/Inter-Black.ttf"); }
+  @font-face { font-family: "NotoSC"; font-weight: 400; src: url("../assets/fonts/NotoSansSC-Regular.otf"); }
+  @font-face { font-family: "NotoSC"; font-weight: 500; src: url("../assets/fonts/NotoSansSC-Medium.otf"); }
+  @font-face { font-family: "NotoSC"; font-weight: 700; src: url("../assets/fonts/NotoSansSC-Bold.otf"); }
+  @font-face { font-family: "NotoSC"; font-weight: 900; src: url("../assets/fonts/NotoSansSC-Black.otf"); }
+  html, body { margin: 0; background: #222; }
+  canvas { display: block; width: 1920px; height: 1080px; }
+  body.preview canvas { width: min(100vw, 1600px); height: auto; }
+  #ui { font: 13px Inter, sans-serif; color: #ddd; padding: 8px; display: none; gap: 8px; align-items: center; }
+  body.preview #ui { display: flex; }
+  #scrub { flex: 1; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<div id="ui"><button id="play">▶</button><input id="scrub" type="range" min="0" max="240" step="0.033" value="0"><span id="tc">0.00</span></div>
+<script>document.write('<script src="film.js?v=' + Date.now() + '"><\/script>');</script>
+<script>
+  // 预览模式：index.html?preview=1&t=12.5 ；渲染管线不带 preview 参数，直接调用 window.renderFrame(t)
+  const q = new URLSearchParams(location.search);
+  if (q.get('preview')) {
+    document.body.classList.add('preview');
+    filmReady().then(() => {
+      const s = document.getElementById('scrub'), tc = document.getElementById('tc');
+      s.max = FILM.duration;
+      let t = parseFloat(q.get('t') || '0'), playing = false, last = 0;
+      const show = () => { renderFrame(t); s.value = t; tc.textContent = t.toFixed(2); };
+      s.oninput = () => { t = parseFloat(s.value); show(); };
+      document.getElementById('play').onclick = () => { playing = !playing; last = performance.now(); if (playing) loop(); };
+      function loop(now) { if (!playing) return; now = performance.now(); t = Math.min(FILM.duration, t + (now - last) / 1000); last = now; show(); requestAnimationFrame(loop); }
+      show();
+    });
+  }
+</script>
+</body>
+</html>

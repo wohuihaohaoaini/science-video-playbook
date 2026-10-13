@@ -1,0 +1,43 @@
+{
+  "slug": "cyanide-resistant-respiration",
+  "title": "抗氰呼吸",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "min_total_seconds": 240,
+  "refs_seconds": 16,
+  "render": {
+    "workers": 7,
+    "subframes": 4,
+    "shutter": 0.5,
+    "videotoolbox_bitrate": "16M",
+    "x264_crf": 16
+  },
+  "voice": {
+    "engine": "edge-tts",
+    "voice": "zh-CN-YunxiNeural",
+    "rate": "+6%"
+  },
+  "mix": {
+    "target_lufs": -16,
+    "true_peak_db": -1.5,
+    "duck_db": -8,
+    "duck_attack_s": 0.06,
+    "duck_release_s": 0.4,
+    "sfx_below_voice_db": 12
+  },
+  "music": {
+    "bpm": 96,
+    "seed": 20261009,
+    "pulse_from_scene": "S3",
+    "bass_from_scene": "S5",
+    "dark_scenes": ["S9"],
+    "pulse_break": { "line": "L08", "offset": 0.85, "beats": 4 },
+    "title_hit_scene": "S2"
+  },
+  "outputs": {
+    "video": "out/{slug}_1080p30.mp4",
+    "srt": "out/{slug}.srt",
+    "cover": "out/cover.png"
+  }
+}
